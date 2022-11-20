@@ -5,6 +5,11 @@ public class InaccessibleTile implements Tile {
 
     @Override
     public String print() {
-        return "X";
+        return Utils.getBlackInaccessibleString("    ");
+    }
+
+    @Override
+    public String print(String input) {
+        return print();
     }
 }

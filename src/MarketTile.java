@@ -16,4 +16,9 @@ public class MarketTile implements Tile {
     public String print() {
         return "M";
     }
+
+    @Override
+    public String print(String input) {
+        return print();
+    }
 }

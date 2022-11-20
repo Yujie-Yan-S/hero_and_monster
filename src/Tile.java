@@ -4,4 +4,7 @@
 public interface Tile {
 
     String print();
+
+
+    String print(String input);
 }

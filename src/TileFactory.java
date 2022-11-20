@@ -6,59 +6,21 @@ import java.util.Random;
 public class TileFactory {
     private Random random;
 
-    private double INACCESS_RATIO;
-    private double MARKET_RATIO;
-    private double COMMON_RATIO;
+    private double PLAIN_RATIO;
+    private double BUSH_RATIO;
+    private double CAVE_RATIO;
+    private double KOULOU_RATIO;
 
-    private int numOfCommon = 0;
-    private int numOfMarket = 0;
-
-    public int getNumOfCommon() {
-        return numOfCommon;
-    }
-
-    public int getNumOfMarket() {
-        return numOfMarket;
-    }
-
-    public int getNumOfInaccessible() {
-        return numOfInaccessible;
-    }
-
-    private int numOfInaccessible = 0;
 
     public TileFactory() {
     }
 
-    public TileFactory(Random random, double inaccess, double market, double common) {
+    public TileFactory(Random random, double cave, double plain, double bush, double koulou) {
         this.random = random;
-        COMMON_RATIO = common;
-        INACCESS_RATIO = inaccess;
-        MARKET_RATIO = market;
-    }
-
-    /**
-     * get tile with specific type
-     *
-     * @param tileType
-     * @return tile
-     */
-    public Tile getTile(String tileType) {
-        if (tileType == null) {
-            return null;
-        }
-        if (tileType.equalsIgnoreCase("common")) {
-            numOfCommon++;
-            return new CommonTile();
-        } else if (tileType.equalsIgnoreCase("market")) {
-            numOfMarket++;
-            return new MarketTile();
-        } else if (tileType.equalsIgnoreCase("inaccessible")) {
-            numOfInaccessible++;
-            return new InaccessibleTile();
-        } else {
-            return null;
-        }
+        PLAIN_RATIO = plain;
+        BUSH_RATIO = bush;
+        CAVE_RATIO = cave;
+        KOULOU_RATIO = koulou;
     }
 
     /**
@@ -67,25 +29,35 @@ public class TileFactory {
      * @return tile
      */
     public Tile getTile() {
+        double temp = 0;
         double i = random.nextDouble();
-        if (i <= INACCESS_RATIO) {
-            numOfInaccessible++;
-            return new InaccessibleTile();
-        } else if (i <= INACCESS_RATIO + MARKET_RATIO) {
-            numOfMarket++;
-            return new MarketTile();
+        if (i <= (temp = temp + BUSH_RATIO)) {
+            return new BushTile();
+        } else if (i <= (temp = temp + CAVE_RATIO)) {
+            return new CaveTile();
+        } else if (i <= (temp = temp + KOULOU_RATIO)) {
+            return new KoulouTile();
         } else {
-            numOfCommon++;
             return new CommonTile();
         }
     }
 
-    /**
-     * get how many kinds of tiles are created
-     *
-     * @return String
-     */
-    public String getStatistics() {
-        return "1. Number of Inaccessible tile " + numOfInaccessible + ".\n" + "2. Number of Common tile " + numOfCommon + ".\n" + "3. Number of Market tile " + numOfMarket + ".";
+
+    public static void main(String[] args) {
+        TileFactory tileFactory = new TileFactory(new Random(), 0.2, 0.4, 0.2, 0.2);
+        System.out.println(tileFactory.getTile().print("M1  "));
+        System.out.println();
+        System.out.println(tileFactory.getTile().print());
+        System.out.println();
+        System.out.println(tileFactory.getTile().print());
+        System.out.println();
+        System.out.println(tileFactory.getTile().print());
+        System.out.println();
+        System.out.println(tileFactory.getTile().print());
+        System.out.println();
+        System.out.println(tileFactory.getTile().print());
+        System.out.println();
+
+
     }
 }

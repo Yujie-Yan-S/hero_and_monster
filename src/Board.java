@@ -7,9 +7,10 @@ import java.util.Random;
  */
 public class Board {
     private final int DEFAULT_SIZE = 8;
-    private final double INACCESS_RATIO = 0.2;
-    private final double MARKET_RATIO = 0.3;
-    private final double COMMON_RATIO = 0.5;
+    private final double PLAIN_RATIO = 0.4;
+    private final double BUSH_RATIO = 0.2;
+    private final double CAVE_RATIO = 0.2;
+    private final double KOULOU_RATIO = 0.2;
     private final long seed = 1234;
 
     public int getDEFAULT_SIZE() {
@@ -35,17 +36,38 @@ public class Board {
     }
 
     /**
-     * initialize the board with the given seed and default board size and ratio of map
+     * initialize the map with the given seed and default board size and ratio of map
      */
     private void initializeWorld() {
-        TileFactory tileFactory = new TileFactory(random, INACCESS_RATIO, MARKET_RATIO, COMMON_RATIO);
+        TileFactory tileFactory = new TileFactory(random, CAVE_RATIO, PLAIN_RATIO, BUSH_RATIO, KOULOU_RATIO);
         board = new Tile[DEFAULT_SIZE][DEFAULT_SIZE];
-        for (int i = 0; i < DEFAULT_SIZE; i++) {
-            for (int j = 0; j < DEFAULT_SIZE; j++) {
-                board[i][j] = tileFactory.getTile();
+        // create the monster nexus row
+        for (int i = 0; i < board.length; i++) {
+            if (i != 2 && i != 5) {
+                board[0][i] = new NexusTile(new RespawnMonster());
+            } else {
+                board[0][i] = new InaccessibleTile();
             }
         }
-        System.out.println(tileFactory.getStatistics());
+        // create the lane
+        for (int i = 1; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (j != 2 && j != 5) {
+                    board[i][j] = tileFactory.getTile();
+                } else {
+                    board[i][j] = new InaccessibleTile();
+                }
+            }
+        }
+        //create the hero nexus
+        for (int i = 0; i < board.length; i++) {
+            if (i != 2 && i != 5) {
+                board[board.length - 1][i] = new NexusTile(new RespawnHero());
+            } else {
+                board[board.length - 1][i] = new InaccessibleTile();
+            }
+        }
+
     }
 
     /**
@@ -53,34 +75,8 @@ public class Board {
      *
      * @return String of board
      */
-    public String printBoard(int r, int c) {
-        String ANSI_RESET = "\u001B[0m";
-        // Declaring the background color
-        String ANSI_RED_TEXT
-                = "\u001B[31m";
-        String reuslt = "";
-        for (int i = 0; i < DEFAULT_SIZE; i++) {
-            for (int j = 0; j < DEFAULT_SIZE; j++) {
-                reuslt += "+---";
-            }
-            reuslt += "+\n";
-            for (int j = 0; j < DEFAULT_SIZE; j++) {
-                if (i == r && j == c) {
-                    reuslt += "| " + ANSI_RED_TEXT + "T" + ANSI_RESET + " ";
-                } else {
-                    Tile tiles = board[i][j];
-                    reuslt += "| " + tiles.print() + " ";
-                }
-            }
-            reuslt += "|";
-            reuslt += "\n";
-        }
-        for (int j = 0; j < DEFAULT_SIZE; j++) {
-            reuslt += "+---";
-        }
-        reuslt += "+\n";
-        reuslt += "You are in possition row " + r + " , column " + c;
-        return reuslt;
+    public String printBoard(CharacterBoardRelation cbr) {
+        return null;
     }
 
     /**
@@ -89,24 +85,14 @@ public class Board {
      * @return String of board
      */
     public String printBoard() {
-        String reuslt = "";
-        for (int i = 0; i < DEFAULT_SIZE; i++) {
-            for (int j = 0; j < DEFAULT_SIZE; j++) {
-                reuslt += "+---";
+        String result = "";
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                result += board[i][j].print();
             }
-            reuslt += "+\n";
-            for (int j = 0; j < DEFAULT_SIZE; j++) {
-                Tile tiles = board[i][j];
-                reuslt += "| " + tiles.print() + " ";
-            }
-            reuslt += "|";
-            reuslt += "\n";
+            result += "\n";
         }
-        for (int j = 0; j < DEFAULT_SIZE; j++) {
-            reuslt += "+---";
-        }
-        reuslt += "+";
-        return reuslt;
+        return result;
     }
 
     /**
@@ -118,16 +104,9 @@ public class Board {
         return board[i][j];
     }
 
-    public Market getMarket(int i, int j) {
-        return ((MarketTile) (board[i][j])).getMarket();
-    }
-
-
     public static void main(String[] args) {
-        Board b = new Board();
-        System.out.println(b.printBoard(3, 3));
-
-
+        Board board = new Board();
+        System.out.println(board.printBoard());
     }
 
 

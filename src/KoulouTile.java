@@ -1,19 +1,16 @@
-/**
- * common tile object
- */
-public class CommonTile implements Tile {
+public class KoulouTile extends CommonTile {
     @Override
     public String print() {
-        return "    ";
+        return Utils.getRedKoulouString("    ");
     }
 
     @Override
     public String print(String characterIdentifier) {
-        return characterIdentifier;
+        return Utils.getRedKoulouString(characterIdentifier);
     }
 
+    @Override
     public void increaseAttribute(Hero hero) {
 
     }
-
 }
