@@ -1,4 +1,5 @@
 public class KoulouTile extends CommonTile {
+    private double increasedValue=0;
     @Override
     public String print() {
         return Utils.getRedKoulouString("    ");
@@ -10,7 +11,12 @@ public class KoulouTile extends CommonTile {
     }
 
     @Override
-    public void increaseAttribute(Hero hero) {
+    public void activate(Hero hero) {
+        hero.setBattleStrength((int) (hero.getBattleStrength()+(increasedValue=hero.getBattleStrength()*0.1)));
+    }
 
+    @Override
+    public void deactivate(Hero hero) {
+        hero.setBattleStrength((int) (hero.getBattleStrength()-increasedValue));
     }
 }

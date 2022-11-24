@@ -1,8 +1,16 @@
 public class BushTile extends CommonTile {
+    private double increasedValue=0;
     @Override
-    public void increaseAttribute(Hero hero) {
-
+    public void activate(Hero hero) {
+        hero.setBattleDexterity((int) (hero.getBattleDexterity()+(increasedValue=hero.getDexterityValue()*0.1)));
     }
+
+
+    @Override
+    public void deactivate(Hero hero) {
+        hero.setBattleDexterity((int) (hero.getBattleDexterity()-increasedValue));
+    }
+
 
     @Override
     public String print() {

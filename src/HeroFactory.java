@@ -48,7 +48,13 @@ public class HeroFactory {
      * @return hero
      */
     public Hero getHero(int index) throws CloneNotSupportedException {
-        Hero hero = map.get(heroNames.get(index - 1));
+        Hero hero;
+        try{
+         hero = map.get(heroNames.get(index - 1));}
+        catch (Exception e){
+            System.out.println("No such hero");
+            return null;
+        }
         return hero;
     }
 

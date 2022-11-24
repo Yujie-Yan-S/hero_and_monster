@@ -2,23 +2,14 @@
  * class of Character containing base information shared.
  */
 public class Character {
-    private int x;
-    private int y;
+    private String tag;
 
-    public int getX() {
-        return x;
+    public String getTag() {
+        return tag;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     private String name;

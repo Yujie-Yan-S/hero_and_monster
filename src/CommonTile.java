@@ -12,7 +12,11 @@ public class CommonTile implements Tile {
         return characterIdentifier;
     }
 
-    public void increaseAttribute(Hero hero) {
+    public void activate(Hero hero) {
+
+    }
+
+    public void deactivate(Hero hero){
 
     }
 

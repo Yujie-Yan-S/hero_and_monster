@@ -1,4 +1,4 @@
-public class NexusTile implements Tile {
+public class NexusTile extends CommonTile {
 
     private RespawnStrategy respawnStrategy;
 

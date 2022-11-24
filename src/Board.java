@@ -1,6 +1,8 @@
 
 
 import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
 
 /**
  * class of world with two-dimensional array
@@ -75,7 +77,7 @@ public class Board {
      *
      * @return String of board
      */
-    public String printBoard(CharacterBoardRelation cbr) {
+    public String printBoard(CharacterLocation cbr) {
         return null;
     }
 
@@ -95,6 +97,40 @@ public class Board {
         return result;
     }
 
+
+    /**
+     * print the board without the player position
+     *
+     * @return String of board
+     */
+    public String printBoardWithCharacter() {
+        Set<Position> heroPositions = CharacterLocation.getheroLocation();
+        System.out.println(heroPositions);
+        Set<Position> monsterPosition = CharacterLocation.getmonsterLocation();
+        String result = "";
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                String tag="";
+
+                Position position = new Position(i, j);
+                if(heroPositions.contains(position) && monsterPosition.contains(position)){
+                    tag+=CharacterLocation.getHero(position ).getTag();
+                    tag+=CharacterLocation.getMonster(position).getTag();
+                } else if (heroPositions.contains(position)) {
+                    tag+=CharacterLocation.getHero(position ).getTag()+"  ";
+                } else if (monsterPosition.contains(position)) {
+                    tag+="  "+CharacterLocation.getMonster(position).getTag();
+                }
+                else {
+                    tag+="    ";
+                }
+                result += board[i][j].print(tag);
+            }
+            result += "\n";
+        }
+        return result;
+    }
+
     /**
      * @param i row value
      * @param j column value
@@ -104,9 +140,43 @@ public class Board {
         return board[i][j];
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         Board board = new Board();
-        System.out.println(board.printBoard());
+        HeroFactory heroFactory = new HeroFactory();
+        Hero hero = heroFactory.getHero(1);
+        hero.setTag("H1");
+        Hero hero1 = heroFactory.getHero(2);
+        hero1.setTag("H2");
+
+        Hero hero2 = heroFactory.getHero(3);
+        hero2.setTag("H3");
+        Controller controller= new Controller();
+
+        CharacterLocation.addCharacter(hero,new Position(7,0));
+        CharacterLocation.addCharacter(hero1,new Position(6,4));
+        CharacterLocation.addCharacter(hero2,new Position(7,6));
+        Scanner scanner = new Scanner(System.in);
+        while(true) {
+            System.out.println(board.printBoardWithCharacter());
+            System.out.print("Type in command for h1: ");
+            String s = scanner.nextLine();
+            if(s.matches("[wasd]")){
+                controller.move(hero,s);
+            }
+            else if(s.equalsIgnoreCase("b")){
+                controller.backToBase(hero);
+            } else if (s.equalsIgnoreCase("t")) {
+                System.out.println("which lane you want to teleport to:");
+                int lane = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println("which side you want to teleport to b for back s for side:");
+                String direction = scanner.nextLine();
+                controller.teleport(hero,lane,direction);
+
+
+            }
+
+        }
     }
 
 
