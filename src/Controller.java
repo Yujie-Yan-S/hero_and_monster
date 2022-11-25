@@ -7,6 +7,22 @@ public class Controller {
     public Controller() {
     }
 
+    /**
+     * move down
+     */
+    public void moveDown(Character character, Board board){
+        move(character, "s", board);
+    }
+
+
+    /**
+     * move side
+     */
+    public void moveSide(Character character, Board board){
+        if(!move(character,"a",board)){
+            move(character,"d",board);
+        }
+    }
 
     /**
      * respawn monster with the highest level caller check the highest level hero on board
@@ -19,14 +35,22 @@ public class Controller {
             list.add(monsterFactory.getMonster(level));
         }
         CharacterLocation.respawnMonsters(list);
-
     }
 
+    /**
+     * called after hero die
+     * @param hero
+     * @param board
+     */
     public void respawnHero(Hero hero, Board board){
         backToBase(hero, board);
         hero.resetBattleStats();// set hero stats to the original value
     }
 
+    /**
+     * initailize all heros
+     * @param list
+     */
     public void respawnAllHero(List<Hero> list){
         CharacterLocation.addCharacter(list.get(0),new Position(7,0));
         CharacterLocation.addCharacter(list.get(1),new Position(6,4));
