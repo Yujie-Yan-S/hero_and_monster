@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Valor {
     private Board board;
     private Controller controller;
+
     public void start() throws CloneNotSupportedException {
         Scanner scanner = new Scanner(System.in);
         board = new Board();
@@ -36,10 +37,11 @@ public class Valor {
         // add all heros into the board
         ArrayList<Hero> listOfHeros = new ArrayList<>();
         listOfHeros.add(hero);
-        listOfHeros.add(hero1);
-        listOfHeros.add(hero2);
+//        listOfHeros.add(hero1);
+//        listOfHeros.add(hero2);
         System.out.println(listOfHeros);
-        controller.respawnAllHero(listOfHeros);
+//        controller.respawnAllHero(listOfHeros);
+        CharacterLocation.addCharacter(hero, new Position(4, 1));
         //get the highest level
         List<Monster> monsterList = controller.respawnMonster(1);
         //print the board
@@ -75,7 +77,7 @@ public class Valor {
                                 "d for going right");
                         String command = scanner.nextLine();
                         controller.move(heroi, command, board);
-                        if(CharacterLocation.anyCharacterReachedNexus(heroi)){
+                        if (CharacterLocation.anyCharacterReachedNexus(heroi)) {
                             System.out.println("Hero win the game");
                             System.exit(0);
                         }
@@ -117,35 +119,29 @@ public class Valor {
                 }
             }
             //turn for monster
-            for(Monster i:monsterList){
-                if(i.getHP()<=0){
+            for (Monster i : monsterList) {
+                if (i.getHP() <= 0) {
                     CharacterLocation.removeMonster(i);
                 }
                 moveOrAttack(i);
-                if(CharacterLocation.anyCharacterReachedNexus(i)){
-                    System.out.println("Hero win the game");
+                if (CharacterLocation.anyCharacterReachedNexus(i)) {
+                    System.out.println("Monster win the game");
                     System.exit(0);
                 }
             }
         }
 
 
-
     }
 
-    public void moveOrAttack(Monster monster){
+    public void moveOrAttack(Monster monster) {
         Hero surroundingHero = CharacterLocation.getSurroundingHero(monster);
-        if(surroundingHero==null){
-         controller.moveDown(monster,board);
-     }
-     else {
-         attackRandomHero(monster,surroundingHero);
-     }
+        if (surroundingHero == null) {
+            controller.moveDown(monster, board);
+        } else {
+            attackRandomHero(monster, surroundingHero);
+        }
     }
-
-
-
-
 
 
     public boolean useItem(Hero hero) {
@@ -241,8 +237,7 @@ public class Valor {
     }
 
 
-
-    public String prompt(){
+    public String prompt() {
         return "1. Change Weapon or Armor\n" +
                 "2. Use a Potion\n" +
                 "3. Attack\n" +

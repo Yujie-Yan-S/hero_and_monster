@@ -13,13 +13,11 @@ public class CaveTile extends CommonTile {
 
     @Override
     public void activate(Hero hero) {
-        System.out.println("activate cave called");
        hero.setBattleAgility((int) (hero.getBattleAgility()+ (increasedValue=hero.getDodgeChance()*0.1)));
     }
 
     @Override
     public void deactivate(Hero hero) {
-        System.out.println("deactivate cave called");
         hero.setBattleAgility((int) (hero.getBattleAgility()-increasedValue));
     }
 }

@@ -27,6 +27,7 @@ public class ValidateMove {
     public static boolean checkPassingMonster(Position position){
         Set<Position> positions = CharacterLocation.getmonsterLocation();
         for (Position i:positions){
+//            (position.getX()==i.getX()&&position.getY()==i.getY())
             if (position.equals(i) || (Math.abs(position.getY()-i.getY())==1 && position.getX()==i.getX())){
                 System.out.println("Cannot pass a monster");
                 return false;

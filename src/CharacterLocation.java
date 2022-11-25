@@ -136,6 +136,7 @@ public class CharacterLocation {
         positions.add(new Position(position.getX()-1,position.getY()));
         positions.add(new Position(position.getX()-1,position.getY()+1));
         positions.add(new Position(position.getX(),position.getY()-1));
+        positions.add(new Position(position.getX(),position.getY()));
         positions.add(new Position(position.getX(),position.getY()+1));
         positions.add(new Position(position.getX()+1,position.getY()-1));
         positions.add(new Position(position.getX()+1,position.getY()));
