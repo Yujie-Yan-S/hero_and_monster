@@ -4,6 +4,7 @@ import java.util.*;
  * generate monster with given level and name
  */
 public class MonsterFactory {
+    private int tag=1;
     /**
      * list of monsters
      */
@@ -63,7 +64,9 @@ public class MonsterFactory {
      * @return random monster
      */
     public Monster getMonster() throws CloneNotSupportedException {
-        return list.get(getRandomIndex(list.size())).clone();
+        Monster clone = list.get(getRandomIndex(list.size())).clone();
+        clone.setTag("M"+tag++);
+        return clone;
     }
 
 
@@ -79,7 +82,9 @@ public class MonsterFactory {
             getMonster(10);
         }
         List<Monster> monsters = map.get(level);
-        return monsters.get(getRandomIndex(monsters.size())).clone();
+        Monster clone = monsters.get(getRandomIndex(monsters.size())).clone();
+        clone.setTag("M"+tag++);
+        return clone;
     }
 
     public List<Monster> generateMonsterList(int number, int level) {

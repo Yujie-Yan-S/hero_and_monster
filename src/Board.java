@@ -1,5 +1,6 @@
 
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class Board {
         // create the monster nexus row
         for (int i = 0; i < board.length; i++) {
             if (i != 2 && i != 5) {
-                board[0][i] = new NexusTile(new RespawnMonster());
+                board[0][i] = new NexusTile();
             } else {
                 board[0][i] = new InaccessibleTile();
             }
@@ -64,7 +65,7 @@ public class Board {
         //create the hero nexus
         for (int i = 0; i < board.length; i++) {
             if (i != 2 && i != 5) {
-                board[board.length - 1][i] = new NexusTile(new RespawnHero());
+                board[board.length - 1][i] = new NexusTile();
             } else {
                 board[board.length - 1][i] = new InaccessibleTile();
             }
@@ -106,6 +107,8 @@ public class Board {
     public String printBoardWithCharacter() {
         Set<Position> heroPositions = CharacterLocation.getheroLocation();
         System.out.println(heroPositions);
+        Set<Position> monsterPositions = CharacterLocation.getmonsterLocation();
+        System.out.println("Monster position: "+monsterPositions);
         Set<Position> monsterPosition = CharacterLocation.getmonsterLocation();
         String result = "";
         for (int i = 0; i < board.length; i++) {
@@ -151,27 +154,30 @@ public class Board {
         Hero hero2 = heroFactory.getHero(3);
         hero2.setTag("H3");
         Controller controller= new Controller();
+        ArrayList<Hero> list = new ArrayList<>();
+        list.add(hero);
+        list.add(hero1);
+        list.add(hero2);
+        controller.respawnAllHero(list);
+        controller.respawnMonster(1);
 
-        CharacterLocation.addCharacter(hero,new Position(7,0));
-        CharacterLocation.addCharacter(hero1,new Position(6,4));
-        CharacterLocation.addCharacter(hero2,new Position(7,6));
         Scanner scanner = new Scanner(System.in);
         while(true) {
             System.out.println(board.printBoardWithCharacter());
             System.out.print("Type in command for h1: ");
             String s = scanner.nextLine();
             if(s.matches("[wasd]")){
-                controller.move(hero,s);
+                controller.move(hero,s, board);
             }
             else if(s.equalsIgnoreCase("b")){
-                controller.backToBase(hero);
+                controller.backToBase(hero, board);
             } else if (s.equalsIgnoreCase("t")) {
                 System.out.println("which lane you want to teleport to:");
                 int lane = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println("which side you want to teleport to b for back s for side:");
                 String direction = scanner.nextLine();
-                controller.teleport(hero,lane,direction);
+                controller.teleport(hero,lane,direction, board);
 
 
             }

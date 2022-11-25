@@ -1,7 +1,7 @@
 /**
  * market tile on the board
  */
-public class MarketTile implements Tile {
+public class MarketTile extends CommonTile {
     private Market market;
 
     public Market getMarket() {

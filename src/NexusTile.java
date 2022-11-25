@@ -1,9 +1,10 @@
-public class NexusTile extends CommonTile {
+public class NexusTile extends MarketTile {
 
-    private RespawnStrategy respawnStrategy;
 
-    public NexusTile(RespawnStrategy respawnStrategy) {
-        this.respawnStrategy = respawnStrategy;
+
+    private Position position;
+    public NexusTile() {
+
     }
 
     @Override
@@ -16,10 +17,5 @@ public class NexusTile extends CommonTile {
         return Utils.getBlueNexusString(characterIdentifier);
     }
 
-    /**
-     * different respawn strategy for hero and for monster
-     */
-    public void respawn() {
-        respawnStrategy.respawn();
-    }
+
 }

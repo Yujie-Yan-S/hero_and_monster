@@ -1,12 +1,41 @@
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * controls players movement
  */
 public class Controller {
-    4654654
+    public Controller() {
+    }
+
+
+    /**
+     * respawn monster with the highest level caller check the highest level hero on board
+     */
+
+    public void respawnMonster(int level) throws CloneNotSupportedException {
+        MonsterFactory monsterFactory = new MonsterFactory();
+        ArrayList<Monster> list = new ArrayList<>();
+        for(int i=0;i<3;i++){
+            list.add(monsterFactory.getMonster(level));
+        }
+        CharacterLocation.respawnMonsters(list);
+
+    }
+
+    public void respawnHero(Hero hero, Board board){
+        backToBase(hero, board);
+        hero.resetBattleStats();// set hero stats to the original value
+    }
+
+    public void respawnAllHero(List<Hero> list){
+        CharacterLocation.addCharacter(list.get(0),new Position(7,0));
+        CharacterLocation.addCharacter(list.get(1),new Position(6,4));
+        CharacterLocation.addCharacter(list.get(2),new Position(7,6));
+    }
+
+
+
+
     /**
      *  activate and deactivate after entering a tile
      */
@@ -16,12 +45,18 @@ public class Controller {
      * @param command
      * @return
      */
-    public boolean move(Character character, String command) {
+    public boolean move(Character character, String command, Board board) {
         Position location = CharacterLocation.getLocation(character);
+        System.out.println("old position is: "+ location);
+        System.out.println("OLD hero attributes: "+ (Hero)character);
+
+        boolean b=false;
+        Tile tile = board.getTile(location.getX(), location.getY());
+        ((CommonTile) tile).deactivate((Hero) character);
         if (command.equalsIgnoreCase("w")) {
             Position futurePosition = new Position(location.getX() - 1, location.getY());
             //check valid move
-            boolean b = ValidateMove.checkPassingMonster(location);
+            b = ValidateMove.checkPassingMonster(location);
             b = b && ValidateMove.checkInaccessible(futurePosition);
             b = b && ValidateMove.checkDuplicateHero(futurePosition);
             b = b && ValidateMove.checkMapRange(futurePosition);
@@ -29,42 +64,34 @@ public class Controller {
 
             if(b) {
                 CharacterLocation.moveUp(character);
-                return b;
             }
-            else {
-                return b;
-            }
+
         } else if (command.equalsIgnoreCase("s")) {
             Position futurePosition = new Position(location.getX() + 1, location.getY());
 
             //check valid move
-            boolean b = ValidateMove.checkInaccessible(futurePosition);
+            b = ValidateMove.checkInaccessible(futurePosition);
             b = b && ValidateMove.checkDuplicateHero(futurePosition);
             b = b && ValidateMove.checkMapRange(futurePosition);
 
             if(b) {
                 CharacterLocation.moveDown(character);
-                return b;
             }
-            else {
-                return b;
-            }
+
 
         } else if (command.equalsIgnoreCase("a")) {
             Position futurePosition = new Position(location.getX(), location.getY()-1);
 
             //check valid move
-            boolean b = ValidateMove.checkInaccessible(futurePosition);
+            b = ValidateMove.checkInaccessible(futurePosition);
             b = b && ValidateMove.checkDuplicateHero(futurePosition);
             b = b && ValidateMove.checkMapRange(futurePosition);
 
             if(b) {
                 CharacterLocation.moveLeft(character);
-                return b;
             }
-            else {
-                return b;
-            }
+
+            return b;
 
 // check valid move
 
@@ -74,24 +101,24 @@ public class Controller {
             Position futurePosition = new Position(location.getX(), location.getY()+1);
 
             //check valid move
-            boolean b = ValidateMove.checkInaccessible(futurePosition);
+            b = ValidateMove.checkInaccessible(futurePosition);
             b = b && ValidateMove.checkDuplicateHero(futurePosition);
             b = b && ValidateMove.checkMapRange(futurePosition);
 
             if(b) {
                 CharacterLocation.moveRight(character);
-                return b;
-            }
-            else {
-                return b;
             }
 
 
 
+
         }
-        else {
-            return false;
-        }
+        tile = board.getTile(location.getX(), location.getY());
+        ((CommonTile) tile).activate((Hero) character);
+        System.out.println("new location is : "+location);
+        System.out.println("current hero attributes: "+ (Hero)character);
+        return b;
+
     }
 
 
@@ -104,7 +131,7 @@ public class Controller {
      * direction take b for back and s for side
      * @param character
      */
-    public boolean teleport(Character character, int lane, String direction){
+    public boolean teleport(Character character, int lane, String direction, Board board){
         Set<Position> characterInDiffernetlane = getCharacterInDiffernetlane(character);
         Position p = null;
         for(Position i: characterInDiffernetlane){
@@ -123,7 +150,7 @@ public class Controller {
         }
         try {
             if(p!=null && ValidateMove.checkMapRange(p)&&ValidateMove.checkInaccessible(p)&&ValidateMove.checkDuplicateHero(p)) {
-                CharacterLocation.changeLocation(character, p);
+                CharacterLocation.changeLocation(character, p,board);
                 return true;
             }else return false;
         }catch (Exception e){
@@ -169,8 +196,8 @@ public class Controller {
      * change the location of this character to his nexus
      * @param character
      */
-    public void backToBase(Character character){
+    public void backToBase(Character character, Board board){
         Position nexus = CharacterLocation.getNexus(character);
-        CharacterLocation.changeLocation(character,nexus);
+        CharacterLocation.changeLocation(character,nexus, board);
     }
 }
