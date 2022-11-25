@@ -90,6 +90,16 @@ public class CharacterLocation {
         return characterNexus.get(character);
     }
 
+    public static boolean inBase(Character character){
+        Position location = getLocation(character);
+        for(Character i: characterNexus.keySet()){
+            if(location.equals(characterNexus.get(i))){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * return the surround hero for monster
      * if there is no hero return null
