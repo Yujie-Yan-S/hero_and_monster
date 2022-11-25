@@ -31,7 +31,7 @@ public class CharacterLocation {
      * @param character
      * @return
      */
-    public boolean anyCharacterReachedNexus(Character character){
+    public static boolean anyCharacterReachedNexus(Character character){
         if(characterNexus.containsKey(character)){
             if(getLocation(character).getX()==0){
                 return true;
