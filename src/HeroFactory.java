@@ -10,6 +10,8 @@ public class HeroFactory {
 
     private static List<String> heroNames;
 
+    private int tag = 1;
+
 
     static {
         map = new HashMap<>();
@@ -49,9 +51,10 @@ public class HeroFactory {
      */
     public Hero getHero(int index) throws CloneNotSupportedException {
         Hero hero;
-        try{
-         hero = map.get(heroNames.get(index - 1));}
-        catch (Exception e){
+        try {
+            hero = map.get(heroNames.get(index - 1));
+            hero.setTag("H"+tag++);
+        } catch (Exception e) {
             System.out.println("No such hero");
             return null;
         }

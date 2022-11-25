@@ -143,47 +143,6 @@ public class Board {
         return board[i][j];
     }
 
-    public static void main(String[] args) throws CloneNotSupportedException {
-        Board board = new Board();
-        HeroFactory heroFactory = new HeroFactory();
-        Hero hero = heroFactory.getHero(1);
-        hero.setTag("H1");
-        Hero hero1 = heroFactory.getHero(2);
-        hero1.setTag("H2");
-
-        Hero hero2 = heroFactory.getHero(3);
-        hero2.setTag("H3");
-        Controller controller= new Controller();
-        ArrayList<Hero> list = new ArrayList<>();
-        list.add(hero);
-        list.add(hero1);
-        list.add(hero2);
-        controller.respawnAllHero(list);
-        controller.respawnMonster(1);
-
-        Scanner scanner = new Scanner(System.in);
-        while(true) {
-            System.out.println(board.printBoardWithCharacter());
-            System.out.print("Type in command for h1: ");
-            String s = scanner.nextLine();
-            if(s.matches("[wasd]")){
-                controller.move(hero,s, board);
-            }
-            else if(s.equalsIgnoreCase("b")){
-                controller.backToBase(hero, board);
-            } else if (s.equalsIgnoreCase("t")) {
-                System.out.println("which lane you want to teleport to:");
-                int lane = scanner.nextInt();
-                scanner.nextLine();
-                System.out.println("which side you want to teleport to b for back s for side:");
-                String direction = scanner.nextLine();
-                controller.teleport(hero,lane,direction, board);
-
-
-            }
-
-        }
-    }
 
 
 }

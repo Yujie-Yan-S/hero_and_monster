@@ -28,13 +28,14 @@ public class Controller {
      * respawn monster with the highest level caller check the highest level hero on board
      */
 
-    public void respawnMonster(int level) throws CloneNotSupportedException {
+    public List<Monster> respawnMonster(int level) throws CloneNotSupportedException {
         MonsterFactory monsterFactory = new MonsterFactory();
         ArrayList<Monster> list = new ArrayList<>();
         for(int i=0;i<3;i++){
             list.add(monsterFactory.getMonster(level));
         }
         CharacterLocation.respawnMonsters(list);
+        return list;
     }
 
     /**
@@ -43,7 +44,7 @@ public class Controller {
      * @param board
      */
     public void respawnHero(Hero hero, Board board){
-        backToBase(hero, board);
+        recall(hero, board);
         hero.resetBattleStats();// set hero stats to the original value
     }
 
@@ -220,7 +221,7 @@ public class Controller {
      * change the location of this character to his nexus
      * @param character
      */
-    public void backToBase(Character character, Board board){
+    public void recall(Character character, Board board){
         Position nexus = CharacterLocation.getNexus(character);
         CharacterLocation.changeLocation(character,nexus, board);
     }
