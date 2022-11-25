@@ -26,6 +26,25 @@ public class CharacterLocation {
         addCharacter(monster,new Position(0,7));
     }
 
+    /**
+     * return if the input character reached the opposite nexus
+     * @param character
+     * @return
+     */
+    public boolean anyCharacterReachedNexus(Character character){
+        if(characterNexus.containsKey(character)){
+            if(getLocation(character).getX()==0){
+                return true;
+            }
+        }else {
+            if(getLocation(character).getX()==7){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 
     /**
@@ -86,19 +105,6 @@ public class CharacterLocation {
         return null;
     }
 
-    private static Set<Position> getSurroundingLocation(Position position){
-        HashSet<Position> positions = new HashSet<>();
-        positions.add(new Position(position.getX()-1,position.getY()-1));
-        positions.add(new Position(position.getX()-1,position.getY()));
-        positions.add(new Position(position.getX()-1,position.getY()+1));
-        positions.add(new Position(position.getX(),position.getY()-1));
-        positions.add(new Position(position.getX(),position.getY()+1));
-        positions.add(new Position(position.getX()+1,position.getY()-1));
-        positions.add(new Position(position.getX()+1,position.getY()));
-        positions.add(new Position(position.getX()+1,position.getY()+1));
-        return positions;
-    }
-
     /**
      * return the surround monster for hero
      * if there is no monster in attack range return null.
@@ -113,6 +119,21 @@ public class CharacterLocation {
         }
         return null;
     }
+
+    private static Set<Position> getSurroundingLocation(Position position){
+        HashSet<Position> positions = new HashSet<>();
+        positions.add(new Position(position.getX()-1,position.getY()-1));
+        positions.add(new Position(position.getX()-1,position.getY()));
+        positions.add(new Position(position.getX()-1,position.getY()+1));
+        positions.add(new Position(position.getX(),position.getY()-1));
+        positions.add(new Position(position.getX(),position.getY()+1));
+        positions.add(new Position(position.getX()+1,position.getY()-1));
+        positions.add(new Position(position.getX()+1,position.getY()));
+        positions.add(new Position(position.getX()+1,position.getY()+1));
+        return positions;
+    }
+
+
 
 
 
@@ -259,6 +280,13 @@ public class CharacterLocation {
      */
     public static Position getLocation(Character character) {
         return characterLocation.get(character);
+    }
+
+
+    public static void main(String[] args) {
+        Set<Position> surroundingLocation = getSurroundingLocation(new Position(2, 3));
+        System.out.println(surroundingLocation);
+
     }
 
 
