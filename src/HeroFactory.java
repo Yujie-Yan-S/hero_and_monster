@@ -53,12 +53,13 @@ public class HeroFactory {
         Hero hero;
         try {
             hero = map.get(heroNames.get(index - 1));
-            hero.setTag("H"+tag++);
         } catch (Exception e) {
             System.out.println("No such hero");
             return null;
         }
-        return hero;
+        Hero result = hero.clone();
+        result.setTag("H"+tag++);
+        return result;
     }
 
     public int getNumOfHero() {

@@ -196,14 +196,22 @@ public class CharacterLocation {
         locationHero.put(position, hero);
     }
 
-    public static void removeMonsterLocation(Position position) {
-        locationMonster.remove(position);
+
+
+    public static void removeMonster(Monster monster){
+        Position location = getLocation(monster);
+        System.out.println("this is old");
+        System.out.println(characterLocation);
+        System.out.println(locationMonster);
+        characterLocation.remove(monster);
+        locationMonster.remove(location);
+        System.out.println("this is new");
+        System.out.println(characterLocation);
+        System.out.println(locationMonster);
     }
 
 
-    public static void removeHeroLocation(Position position) {
-        locationHero.remove(position);
-    }
+
 
     public static void moveUp(Character character) {
         Position position = characterLocation.get(character);

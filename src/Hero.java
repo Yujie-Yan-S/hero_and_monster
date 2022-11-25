@@ -253,7 +253,7 @@ public class Hero extends Character implements Cloneable {
                 ", damage: " + getBattleStrength() + "/" + getDamageValue() + ", agility: " + getBattleAgility() + "/" + getDodgeChance() + ", dexterityValue: "
                 + getBattleDexterity() + "/" + getDexterityValue() + ", gold: " + getGold() + ", Level: " + getLevelExperience() + ", Equipped Weapon: " + getWeapon()
                 + ", Equipped Armor: " + getArmor() +
-                ']';
+                ']'+"Tag: "+ getTag();
     }
 
 }

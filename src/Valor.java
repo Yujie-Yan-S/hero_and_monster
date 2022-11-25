@@ -16,28 +16,35 @@ public class Valor {
         int s = scanner.nextInt();
         scanner.nextLine();
         Hero hero = heroFactory.getHero(s);
+        System.out.println(hero.getTag());
 
         System.out.println(heroFactory.getHeroList());
         System.out.println("Choose the hero: ");
         s = scanner.nextInt();
         scanner.nextLine();
         Hero hero1 = heroFactory.getHero(s);
+        System.out.println(hero1.getTag());
+
 
         System.out.println(heroFactory.getHeroList());
         System.out.println("Choose the hero: ");
         s = scanner.nextInt();
         scanner.nextLine();
         Hero hero2 = heroFactory.getHero(s);
+        System.out.println(hero2.getTag());
+
         // add all heros into the board
         ArrayList<Hero> listOfHeros = new ArrayList<>();
         listOfHeros.add(hero);
         listOfHeros.add(hero1);
         listOfHeros.add(hero2);
+        System.out.println(listOfHeros);
         controller.respawnAllHero(listOfHeros);
         //get the highest level
-        controller.respawnMonster(1);
+        List<Monster> monsterList = controller.respawnMonster(1);
         //print the board
         while (true) {
+
             //turn for hero
             for (Hero heroi : listOfHeros) {
                 System.out.println(board.printBoardWithCharacter());
@@ -68,6 +75,10 @@ public class Valor {
                                 "d for going right");
                         String command = scanner.nextLine();
                         controller.move(heroi, command, board);
+                        if(CharacterLocation.anyCharacterReachedNexus(heroi)){
+                            System.out.println("Hero win the game");
+                            System.exit(0);
+                        }
                         break;
                     case 6:
                         // teleport
@@ -106,12 +117,33 @@ public class Valor {
                 }
             }
             //turn for monster
-            for()
+            for(Monster i:monsterList){
+                if(i.getHP()<=0){
+                    CharacterLocation.removeMonster(i);
+                }
+                moveOrAttack(i);
+                if(CharacterLocation.anyCharacterReachedNexus(i)){
+                    System.out.println("Hero win the game");
+                    System.exit(0);
+                }
+            }
         }
 
 
 
     }
+
+    public void moveOrAttack(Monster monster){
+        Hero surroundingHero = CharacterLocation.getSurroundingHero(monster);
+        if(surroundingHero==null){
+         controller.moveDown(monster,board);
+     }
+     else {
+         attackRandomHero(monster,surroundingHero);
+     }
+    }
+
+
 
 
 
@@ -161,6 +193,22 @@ public class Valor {
 
     private boolean isDead(Character character) {
         return character.getHP() <= 0;
+    }
+
+    /**
+     * monster pick a random hero to attack
+     *
+     * @param monster
+     */
+    private void attackRandomHero(Monster monster, Hero hero) {
+        boolean b = landAttack(hero.calculateDodgeChacne());
+        System.out.println("Monster attacked " + hero.getName());
+        if (b) {
+            System.out.println("Hero dodged the attack.");
+        } else {
+            hero.reduceHP(monster.calculateDagame() - hero.calculateDefense());
+            System.out.println(monster.getName() + " attacked " + hero.getName() + " deals " + (monster.calculateDagame() - hero.calculateDefense()) + " damage");
+        }
     }
 
 

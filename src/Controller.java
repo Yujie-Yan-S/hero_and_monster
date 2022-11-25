@@ -72,12 +72,11 @@ public class Controller {
      */
     public boolean move(Character character, String command, Board board) {
         Position location = CharacterLocation.getLocation(character);
-        System.out.println("old position is: "+ location);
-        System.out.println("OLD hero attributes: "+ (Hero)character);
 
         boolean b=false;
         Tile tile = board.getTile(location.getX(), location.getY());
-        ((CommonTile) tile).deactivate((Hero) character);
+        if(character instanceof Hero){
+        ((CommonTile) tile).deactivate((Hero) character);}
         if (command.equalsIgnoreCase("w")) {
             Position futurePosition = new Position(location.getX() - 1, location.getY());
             //check valid move
@@ -139,9 +138,8 @@ public class Controller {
 
         }
         tile = board.getTile(location.getX(), location.getY());
-        ((CommonTile) tile).activate((Hero) character);
-        System.out.println("new location is : "+location);
-        System.out.println("current hero attributes: "+ (Hero)character);
+        if(character instanceof Hero){
+        ((CommonTile) tile).activate((Hero) character);}
         return b;
 
     }
